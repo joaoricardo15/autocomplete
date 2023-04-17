@@ -21,9 +21,11 @@ const gitHubRequest = axios.create({
   },
 });
 
-const getUsers = (q: string): Promise<User[]> => {
+const getUsers = (query: string): Promise<User[]> => {
   return gitHubRequest
-    .get(`${GIT_HUB_SEARCH_API}/users`, { params: { q } })
+    .get(`${GIT_HUB_SEARCH_API}/users`, {
+      params: { q: encodeURIComponent(query) },
+    })
     .then((response) => {
       return response.data.items;
     })
@@ -33,9 +35,11 @@ const getUsers = (q: string): Promise<User[]> => {
     });
 };
 
-const getRepositories = (q: string): Promise<Repository[]> => {
+const getRepositories = (query: string): Promise<Repository[]> => {
   return gitHubRequest
-    .get(`${GIT_HUB_SEARCH_API}/repositories`, { params: { q } })
+    .get(`${GIT_HUB_SEARCH_API}/repositories`, {
+      params: { q: encodeURIComponent(query) },
+    })
     .then((response) => {
       return response.data.items;
     })

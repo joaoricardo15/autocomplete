@@ -51,20 +51,21 @@ const useAutocomplete = (
       setActiveSuggestion(activeSuggestion - 1);
     } else if (event.key === "Enter") {
       const selectedSuggestion = suggestions[activeSuggestion - 1];
-      setSearchedValue(selectedSuggestion.name);
-      setSelectedSuggestion(selectedSuggestion.name);
+
       setSuggestions([]);
       setActiveSuggestion(0);
       onSelect(selectedSuggestion);
+      setSearchedValue(selectedSuggestion.name);
+      setSelectedSuggestion(selectedSuggestion.name);
     }
   };
 
   const handleClick = (result: SearchResult) => {
-    setSearchedValue(result.name);
-    setSuggestions([]);
-    setSelectedSuggestion(result.name);
-    setActiveSuggestion(0);
     onSelect(result);
+    setSuggestions([]);
+    setActiveSuggestion(0);
+    setSearchedValue(result.name);
+    setSelectedSuggestion(result.name);
   };
 
   const debouncedFetch = useMemo(() => debounce(handleFetch, 500), []);
