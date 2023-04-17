@@ -10,7 +10,7 @@ const GIT_HUB_SEARCH_API = "https://api.github.com/search";
 
 const gitHubRequest = axios.create({
   headers: {
-    Authorization: `Bearer ${process.env.GITHUB_TOKEN}`,
+    Authorization: `Bearer ${process.env.REACT_APP_GITHUB_TOKEN}`,
   },
   params: {
     per_page: 50,
