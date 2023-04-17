@@ -1,7 +1,7 @@
 import { SetStateAction, useEffect, useMemo, useState } from "react";
 import { debounce } from "@mui/material";
+import { fetchAndMergeSearchResults } from "./api";
 import { SearchResult } from "./interfaces";
-import { fetchSuggestions } from "./api";
 
 const useAutocomplete = (
   onChange: (query: string) => void,
@@ -37,7 +37,7 @@ const useAutocomplete = (
   };
 
   const handleFetch = async (query: string) => {
-    const rawResults = await fetchSuggestions(query);
+    const rawResults = await fetchAndMergeSearchResults(query);
     setSuggestions(rawResults);
     setLoading(false);
   };

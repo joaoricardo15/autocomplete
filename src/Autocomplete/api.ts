@@ -6,14 +6,11 @@ import {
   User,
 } from "./interfaces";
 
-const TOKEN =
-  "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";
-
 const GIT_HUB_SEARCH_API = "https://api.github.com/search";
 
 const gitHubRequest = axios.create({
   headers: {
-    Authorization: `Bearer ${TOKEN}`,
+    Authorization: `Bearer ${process.env.github_token}`,
   },
   params: {
     per_page: 50,
@@ -47,7 +44,9 @@ const getRepositories = (q: string): Promise<Repository[]> => {
     });
 };
 
-export const fetchSuggestions = async (q: string): Promise<SearchResult[]> => {
+export const fetchAndMergeSearchResults = async (
+  q: string
+): Promise<SearchResult[]> => {
   const [users, repositories] = await Promise.all([
     getUsers(q),
     getRepositories(q),
