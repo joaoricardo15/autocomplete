@@ -1,7 +1,7 @@
 {
   "name": "my-app",
   "version": "0.1.0",
-  "homepage": "http://joaoricardo15.github.io/autocomplete",
+  "homepage": "https://joaoricardo15.github.io/autocomplete",
   "description": "Influencer-dna: Reusable autocomplete React component",
   "private": false,
   "scripts": {
