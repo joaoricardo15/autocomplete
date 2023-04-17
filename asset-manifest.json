@@ -1,10 +1,10 @@
 {
   "files": {
-    "main.js": "/autocomplete/static/js/main.233a1488.js",
+    "main.js": "/autocomplete/static/js/main.3ad5d326.js",
     "index.html": "/autocomplete/index.html",
-    "main.233a1488.js.map": "/autocomplete/static/js/main.233a1488.js.map"
+    "main.3ad5d326.js.map": "/autocomplete/static/js/main.3ad5d326.js.map"
   },
   "entrypoints": [
-    "static/js/main.233a1488.js"
+    "static/js/main.3ad5d326.js"
   ]
 }
