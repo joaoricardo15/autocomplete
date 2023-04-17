@@ -10,6 +10,7 @@ const GIT_HUB_SEARCH_API = "https://api.github.com/search";
 
 const gitHubRequest = axios.create({
   headers: {
+    // TODO - This is not safe, solution is to use a proxy server
     Authorization: `Bearer ${process.env.REACT_APP_GITHUB_TOKEN}`,
   },
   params: {
