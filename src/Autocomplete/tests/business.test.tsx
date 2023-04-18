@@ -64,14 +64,18 @@ describe("Minimal chars number to initialize search: 3", () => {
 /////////////////////////////////////////
 // TODO: Implement the following tests:
 
-// test("Result items are combined and displayed alphabetically using repository and profile name as ordering keys", () => {
+// describe("Result items are combined and displayed alphabetically using repository and profile name as ordering keys", () => {
+
 // });
 
-// test("Number of result items should be limited to 50 per request", () => {
+// describe("Number of result items should be limited to 50 per request", () => {
+
 // });
 
-// test("The component should give visual feedback for when the data is being fetched, the results are empty, or the request resulted in an error", () => {
+// describe("The component should give visual feedback for when the data is being fetched, the results are empty, or the request resulted in an error", () => {
+
 // });
 
-// test("The component supports keyboard strokes (up and down arrows to browse the results, enter to open a new tab with the repository/user page)", () => {
+// describe("The component supports keyboard strokes (up and down arrows to browse the results, enter to open a new tab with the repository/user page)", () => {
+
 // });
