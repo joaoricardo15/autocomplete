@@ -6,6 +6,7 @@ import { SearchResult } from "./interfaces";
 const useAutocomplete = (
   onChange: (query: string) => void,
   onSelect: (result: SearchResult) => void,
+  onError: (errorMessage: string) => void,
   inputSearchRef: HTMLInputElement | null
 ) => {
   const [searchedValue, setSearchedValue] = useState("");
@@ -14,6 +15,22 @@ const useAutocomplete = (
   const [activeSuggestion, setActiveSuggestion] = useState(0);
   const [searching, setSearching] = useState(false);
   const [loading, setLoading] = useState(false);
+
+  const clearState = () => {
+    setLoading(false);
+    setSearching(false);
+    setSuggestions([]);
+    setActiveSuggestion(0);
+    setSelectedSuggestion("");
+  };
+
+  const selectSuggestion = (suggestion: SearchResult) => {
+    onSelect(suggestion);
+    setSuggestions([]);
+    setActiveSuggestion(0);
+    setSearchedValue(suggestion.name);
+    setSelectedSuggestion(suggestion.name);
+  };
 
   const handleChange = async (event: {
     target: { value: SetStateAction<string> };
@@ -26,20 +43,12 @@ const useAutocomplete = (
     if (query.length >= 3) {
       setLoading(true);
       setSearching(true);
+      setActiveSuggestion(0);
+      setSelectedSuggestion("");
       debouncedFetch(query);
     } else {
-      setLoading(false);
-      setSearching(false);
-      setSuggestions([]);
-      setSelectedSuggestion("");
-      setActiveSuggestion(0);
+      clearState();
     }
-  };
-
-  const handleFetch = async (query: string) => {
-    const rawResults = await fetchAndMergeSearchResults(query);
-    setSuggestions(rawResults);
-    setLoading(false);
   };
 
   const handleKeyDown = (
@@ -52,23 +61,30 @@ const useAutocomplete = (
     } else if (event.key === "Enter") {
       const selectedSuggestion = suggestions[activeSuggestion - 1];
 
-      setSuggestions([]);
-      setActiveSuggestion(0);
-      onSelect(selectedSuggestion);
-      setSearchedValue(selectedSuggestion.name);
-      setSelectedSuggestion(selectedSuggestion.name);
+      if (selectedSuggestion) {
+        selectSuggestion(selectedSuggestion);
+      }
     }
   };
 
-  const handleClick = (result: SearchResult) => {
-    onSelect(result);
-    setSuggestions([]);
-    setActiveSuggestion(0);
-    setSearchedValue(result.name);
-    setSelectedSuggestion(result.name);
+  const handleClick = (suggestion: SearchResult) => {
+    selectSuggestion(suggestion);
   };
 
-  const debouncedFetch = useMemo(() => debounce(handleFetch, 500), []);
+  const debouncedFetch = useMemo(
+    () =>
+      debounce(async (query: string) => {
+        try {
+          const rawResults = await fetchAndMergeSearchResults(query);
+          setSuggestions(rawResults);
+          setLoading(false);
+        } catch (error) {
+          onError("Error fetching results");
+          clearState();
+        }
+      }, 500),
+    [onError]
+  );
 
   useEffect(() => {
     if (inputSearchRef) {
