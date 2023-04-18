@@ -80,7 +80,9 @@ const useAutocomplete = (
           setLoading(false);
         } catch (error) {
           onError("Error fetching results");
+          setSearchedValue("");
           clearState();
+          throw error;
         }
       }, 500),
     [onError]

@@ -5,6 +5,7 @@ import CardMembershipIcon from "@mui/icons-material/CardMembership";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import { SearchResult, SearchResultTypes } from "./interfaces";
 import useAutocomplete from "./hooks";
+import ErrorProvider from "./error";
 
 export interface AutocompleteInputProps {
   color?: string;
@@ -55,42 +56,48 @@ const Autocomplete = ({
 
   return (
     <ThemeProvider theme={theme}>
-      <Input
-        fullWidth
-        ref={inputSearchRef}
-        value={searchedValue}
-        onChange={handleChange}
-        onKeyDown={handleKeyDown}
-        placeholder={placeholder}
-      />
-      {searching && (
-        <Card>
-          {loading ? (
-            <LinearProgress />
-          ) : !suggestions.length &&
-            searchedValue.length &&
-            !selectedSuggestion.length ? (
-            <Typography padding={1}>{noResultsText}</Typography>
-          ) : (
-            <>
-              {suggestions.map((result: SearchResult, index) => (
-                <ResultItemContainer
-                  key={index}
-                  onClick={() => handleClick(result)}
-                  className={index === activeSuggestion - 1 ? "active" : ""}
-                >
-                  {result.type === SearchResultTypes.user ? (
-                    <AccountCircleIcon />
-                  ) : (
-                    <CardMembershipIcon />
-                  )}
-                  <Typography marginLeft={1}>{result.name}</Typography>
-                </ResultItemContainer>
-              ))}
-            </>
-          )}
-        </Card>
-      )}
+      <ErrorProvider>
+        <Input
+          fullWidth
+          ref={inputSearchRef}
+          value={searchedValue}
+          onChange={handleChange}
+          onKeyDown={handleKeyDown}
+          placeholder={placeholder}
+          inputProps={{ "data-testid": "input" }}
+        />
+        {searching && (
+          <Card>
+            {loading ? (
+              <LinearProgress data-testid="loading" />
+            ) : !suggestions.length &&
+              searchedValue.length &&
+              !selectedSuggestion.length ? (
+              <Typography padding={1} data-testid="no-results-text">
+                {noResultsText}
+              </Typography>
+            ) : (
+              <>
+                {suggestions.map((result: SearchResult, index) => (
+                  <ResultItemContainer
+                    key={index}
+                    data-testid="result-item"
+                    onClick={() => handleClick(result)}
+                    className={index === activeSuggestion - 1 ? "active" : ""}
+                  >
+                    {result.type === SearchResultTypes.user ? (
+                      <AccountCircleIcon />
+                    ) : (
+                      <CardMembershipIcon />
+                    )}
+                    <Typography marginLeft={1}>{result.name}</Typography>
+                  </ResultItemContainer>
+                ))}
+              </>
+            )}
+          </Card>
+        )}
+      </ErrorProvider>
     </ThemeProvider>
   );
 };
