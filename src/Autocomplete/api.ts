@@ -7,52 +7,40 @@ import {
 } from "./interfaces";
 
 const GIT_HUB_SEARCH_API = "https://api.github.com/search";
-const GITHUB_DECRYPTED_TOKEN = window.atob(
-  process.env.REACT_APP_GITHUB_TOKEN || ""
-);
 
-const gitHubRequest = axios.create({
-  headers: {
-    // TODO - This is not safe, solution is to use a proxy server
-    Authorization: `Bearer ${GITHUB_DECRYPTED_TOKEN}`,
-  },
-  params: {
-    per_page: 50,
-    // sort: undefined, // Default is best match
-    // order: undefined, // Default is desc,
-    // page: undefined, // Default is 1
-  },
-});
-
-const getUsers = async (query: string): Promise<User[]> => {
-  const response = await gitHubRequest.get(`${GIT_HUB_SEARCH_API}/users`, {
-    params: { q: encodeURIComponent(query) },
-  });
-
-  if (response.status === 200) return response.data.items;
-
-  throw new Error(response.data);
-};
-
-const getRepositories = async (query: string): Promise<Repository[]> => {
-  const response = await gitHubRequest.get(
-    `${GIT_HUB_SEARCH_API}/repositories`,
-    {
-      params: { q: encodeURIComponent(query) },
-    }
-  );
-
-  if (response.status === 200) return response.data.items;
-
-  throw new Error(response.data);
+const searchGithubObjects = async <ObjectType>(
+  objectName: string,
+  query: string
+): Promise<ObjectType[]> => {
+  return axios
+    .get(`${GIT_HUB_SEARCH_API}/${objectName}`, {
+      headers: {
+        // TODO - This is not safe, solution is to use a proxy server
+        Authorization: `Bearer ${window.atob(
+          process.env.REACT_APP_GITHUB_TOKEN || ""
+        )}`,
+      },
+      params: { q: encodeURIComponent(query), per_page: 50 },
+    })
+    .then((response) => {
+      if (response.status === 200) return response.data.items;
+      throw new Error(response.data);
+    })
+    .catch((error) => {
+      if (error.response.status === 403)
+        throw new Error("GitHub rate limit exceeded");
+      if (error.response.status === 401)
+        throw new Error("GitHub API key is invalid");
+      throw error;
+    });
 };
 
 export const fetchAndMergeSearchResults = async (
   q: string
 ): Promise<SearchResult[]> => {
   const [users, repositories] = await Promise.all([
-    getUsers(q),
-    getRepositories(q),
+    searchGithubObjects<User>("users", q),
+    searchGithubObjects<Repository>("repositories", q),
   ]);
 
   return [

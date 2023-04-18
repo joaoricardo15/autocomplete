@@ -26,7 +26,6 @@ const useAutocomplete = (
 
   const selectSuggestion = (suggestion: SearchResult) => {
     onSelect(suggestion);
-    setSuggestions([]);
     setActiveSuggestion(0);
     setSearchedValue(suggestion.name);
     setSelectedSuggestion(suggestion.name);

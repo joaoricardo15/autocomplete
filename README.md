@@ -1,6 +1,10 @@
 # Autocomplete reusable component
 
-GitHub repositories and users autocomplete reusable and self-contained component.
+Reusable and self-contained autocomplete component that fetch suggestions from GitHub repositories and users.
+
+Live at: https://joaoricardo15.github.io/autocomplete/
+
+\*\*\* Search for '_joao123_' to trigger an error.
 
 ### Business criteria:
 
