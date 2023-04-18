@@ -12,6 +12,7 @@ export interface AutocompleteInputProps {
   noResultsText?: string;
   onChange?: (value: string) => void;
   onSelect?: (result: SearchResult) => void;
+  onError?: (errorMessage: string) => void;
 }
 
 const Autocomplete = ({
@@ -20,6 +21,7 @@ const Autocomplete = ({
   noResultsText = "No results...",
   onChange = () => null,
   onSelect = () => null,
+  onError = () => null,
 }: AutocompleteInputProps) => {
   const inputSearchRef = useRef<HTMLInputElement>(null);
 
@@ -39,7 +41,7 @@ const Autocomplete = ({
     handleChange,
     handleKeyDown,
     handleClick,
-  } = useAutocomplete(onChange, onSelect, inputSearchRef.current);
+  } = useAutocomplete(onChange, onSelect, onError, inputSearchRef.current);
 
   const theme = createTheme({
     palette: {

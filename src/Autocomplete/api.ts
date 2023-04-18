@@ -28,10 +28,6 @@ const getUsers = (query: string): Promise<User[]> => {
     })
     .then((response) => {
       return response.data.items;
-    })
-    .catch((error) => {
-      console.log("getUsers error", error);
-      return [];
     });
 };
 
@@ -42,10 +38,6 @@ const getRepositories = (query: string): Promise<Repository[]> => {
     })
     .then((response) => {
       return response.data.items;
-    })
-    .catch((error) => {
-      console.log("getRepositories error", error);
-      return [];
     });
 };
 
@@ -68,5 +60,5 @@ export const fetchAndMergeSearchResults = async (
       url: repository.html_url,
       type: SearchResultTypes.repository,
     })),
-  ].sort((a, b) => b.name.localeCompare(a.name));
+  ].sort((a, b) => a.name.localeCompare(b.name));
 };

@@ -8,6 +8,7 @@ function App() {
     noResultsText: "No results :(",
     onSelect: (result) => window.open(result.url, "_blank"),
     onChange: (value) => console.log("onChange", value),
+    onError: (errorMessage) => alert("Error: " + errorMessage),
   };
 
   return (
