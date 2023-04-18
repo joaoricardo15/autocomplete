@@ -33,7 +33,7 @@ const getUsers = async (query: string): Promise<User[]> => {
 
 const getRepositories = async (query: string): Promise<Repository[]> => {
   const response = await gitHubRequest.get(
-    `${GIT_HUB_SEARCH_API}/reposistories`,
+    `${GIT_HUB_SEARCH_API}/repositories`,
     {
       params: { q: encodeURIComponent(query) },
     }

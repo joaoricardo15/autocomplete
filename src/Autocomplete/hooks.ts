@@ -49,6 +49,13 @@ const useAutocomplete = (
     } else {
       clearState();
     }
+
+    ///////////////////////////////////////////////////////
+    // Trigger error intentionally for testing purposes
+    if (query === "joao123")
+      throw new Error(
+        "This is an intentional error to show you the error boundary"
+      );
   };
 
   const handleKeyDown = (
