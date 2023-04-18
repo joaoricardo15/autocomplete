@@ -20,6 +20,7 @@ Live at: https://joaoricardo15.github.io/autocomplete/
 
 ### Bonus features:
 
+- Debounce function using _useMemo_ (better performance, less requests to server)
 - Support custumized themes (only main color)
 - Centralized error handling using _react-error-boundary_
 - Component unit tests + Business logic tests
