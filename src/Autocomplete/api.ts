@@ -21,24 +21,27 @@ const gitHubRequest = axios.create({
   },
 });
 
-const getUsers = (query: string): Promise<User[]> => {
-  return gitHubRequest
-    .get(`${GIT_HUB_SEARCH_API}/users`, {
-      params: { q: encodeURIComponent(query) },
-    })
-    .then((response) => {
-      return response.data.items;
-    });
+const getUsers = async (query: string): Promise<User[]> => {
+  const response = await gitHubRequest.get(`${GIT_HUB_SEARCH_API}/users`, {
+    params: { q: encodeURIComponent(query) },
+  });
+
+  if (response.status === 200) return response.data.items;
+
+  throw new Error(response.data);
 };
 
-const getRepositories = (query: string): Promise<Repository[]> => {
-  return gitHubRequest
-    .get(`${GIT_HUB_SEARCH_API}/repositories`, {
+const getRepositories = async (query: string): Promise<Repository[]> => {
+  const response = await gitHubRequest.get(
+    `${GIT_HUB_SEARCH_API}/reposistories`,
+    {
       params: { q: encodeURIComponent(query) },
-    })
-    .then((response) => {
-      return response.data.items;
-    });
+    }
+  );
+
+  if (response.status === 200) return response.data.items;
+
+  throw new Error(response.data);
 };
 
 export const fetchAndMergeSearchResults = async (
