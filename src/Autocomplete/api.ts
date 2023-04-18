@@ -7,14 +7,14 @@ import {
 } from "./interfaces";
 
 const GIT_HUB_SEARCH_API = "https://api.github.com/search";
-const REACT_APP_ENCRYPTED_GITHUB_TOKEN = window.btoa(
+const GITHUB_DECRYPTED_TOKEN = window.atob(
   process.env.REACT_APP_GITHUB_TOKEN || ""
 );
 
 const gitHubRequest = axios.create({
   headers: {
     // TODO - This is not safe, solution is to use a proxy server
-    Authorization: `Bearer ${window.atob(REACT_APP_ENCRYPTED_GITHUB_TOKEN)}`,
+    Authorization: `Bearer ${GITHUB_DECRYPTED_TOKEN}`,
   },
   params: {
     per_page: 50,
